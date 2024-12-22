@@ -60,6 +60,13 @@ class CLIHandler : IUserInterface {
 			print(ex.name + ": ")
 			ex.exception.printStackTrace()
 		}
+		if (allowsIgnore) {
+			print("Do you want to ignore them and continue? (Y/N): ")
+			val input = readlnOrNull()
+			if (input.equals("Y", ignoreCase = true)) {
+				return ExceptionListResult.CONTINUE
+			}
+		}
 		return ExceptionListResult.CANCEL
 	}
 

@@ -107,9 +107,11 @@ class Main(args: Array<String>) {
 			cmd.getOptionValue("timeout")?.toLong() ?: 10
 		}
 
+		val skipOnFail = cmd.hasOption("skip-on-fail")
+
 		// Start update process!
 		try {
-			UpdateManager(UpdateManager.Options(packFile, manifestFile, packFolder, multimcFolder, side, timeout), ui)
+			UpdateManager(UpdateManager.Options(packFile, manifestFile, packFolder, multimcFolder, side, timeout, skipOnFail), ui)
 		} catch (e: Exception) {
 			ui.showErrorAndExit("Update process failed", e)
 		}
@@ -127,6 +129,7 @@ class Main(args: Array<String>) {
 			options.addOption(null, "multimc-folder", true, "The MultiMC pack folder (defaults to the parent of the pack directory)")
 			options.addOption(null, "meta-file", true, "JSON file to store pack metadata, relative to the pack folder (defaults to packwiz.json)")
 			options.addOption("t", "timeout", true, "Seconds to wait before automatically launching when asking about optional mods (defaults to 10)")
+			options.addOption(null, "skip-on-fail", false, "Skip the file if download fails instead of exiting")
 		}
 
 		// TODO: link these somehow so they're only defined once?

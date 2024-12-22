@@ -49,6 +49,7 @@ class UpdateManager internal constructor(private val opts: Options, val ui: IUse
 		val multimcFolder: PackwizFilePath,
 		val side: Side,
 		val timeout: Long,
+		val skipOnFail: Boolean
 	)
 
 	// TODO: make this return a value based on results?
@@ -446,7 +447,7 @@ class UpdateManager internal constructor(private val opts: Options, val ui: IUse
 		if (cfFiles.isNotEmpty()) {
 			ui.submitProgress(InstallProgress("Resolving CurseForge metadata..."))
 			val resolveFailures = resolveCfMetadata(cfFiles, opts.packFolder, clientHolder)
-			if (resolveFailures.isNotEmpty()) {
+			if (resolveFailures.isNotEmpty() && !opts.skipOnFail) {
 				errorsOccurred = true
 				return when (ui.showExceptions(resolveFailures, cfFiles.size, true)) {
 					ExceptionListResult.CONTINUE -> {
